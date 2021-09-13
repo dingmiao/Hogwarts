@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gryffindor.dao.mapper.base.ArguementDOBaseMapper">
+
+
+    <insert id="insertArguementDO"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `arguement`
+        (
+        <trim suffixOverrides=",">
+                    <if test="id!=null">
+                        `id`,
+                    </if>
+                    <if test="topic!=null">
+                        `topic`,
+                    </if>
+                    <if test="topicInfo!=null">
+                        `topic_info`,
+                    </if>
+                    <if test="addDate!=null">
+                        `add_date`,
+                    </if>
+                    <if test="category!=null">
+                        `category`,
+                    </if>
+                    <if test="recommendLevel!=null">
+                        `recommend_level`,
+                    </if>
+                    <if test="exlevel!=null">
+                        `exlevel`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="id!=null">
+                    #{id},
+                </if>
+                <if test="topic!=null">
+                    #{topic},
+                </if>
+                <if test="topicInfo!=null">
+                    #{topicInfo},
+                </if>
+                <if test="addDate!=null">
+                    #{addDate},
+                </if>
+                <if test="category!=null">
+                    #{category},
+                </if>
+                <if test="recommendLevel!=null">
+                    #{recommendLevel},
+                </if>
+                <if test="exlevel!=null">
+                    #{exlevel},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateArguementDO">
+        UPDATE `arguement`
+        SET
+        <trim suffixOverrides=",">
+            <if test="topic != null and topic!=''">
+                `topic` = #{topic},
+            </if>
+            <if test="topicInfo != null and topicInfo!=''">
+                `topic_info` = #{topicInfo},
+            </if>
+            <if test="addDate != null and addDate!=''">
+                `add_date` = #{addDate},
+            </if>
+            <if test="category != null and category!=''">
+                `category` = #{category},
+            </if>
+            <if test="recommendLevel != null">
+                `recommend_level` = #{recommendLevel},
+            </if>
+            <if test="exlevel != null">
+                `exlevel` = #{exlevel},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `arguement`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.topic != null and set.topic!=''">
+            `topic` = #{set.topic},
+        </if>
+        <if test="set.topicInfo != null and set.topicInfo!=''">
+            `topic_info` = #{set.topicInfo},
+        </if>
+        <if test="set.addDate != null and set.addDate!=''">
+            `add_date` = #{set.addDate},
+        </if>
+        <if test="set.category != null and set.category!=''">
+            `category` = #{set.category},
+        </if>
+        <if test="set.recommendLevel != null">
+            `recommend_level` = #{set.recommendLevel},
+        </if>
+        <if test="set.exlevel != null">
+            `exlevel` = #{set.exlevel},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.idList != null">
+                    `id` in
+                    <foreach collection="where.idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.idSt !=null">
+                `id` >= #{where.idSt} and
+            </if>
+            <if test="where.idEd!=null">
+                `id` &lt;= #{where.idEd} and
+            </if>
+                <if test="where.topicList != null">
+                    `topic` in
+                    <foreach collection="where.topicList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyTopic!=null and where.fuzzyTopic.size()>0">
+                (
+                <foreach collection="where.fuzzyTopic"  separator="or" item="item">
+                    `Topic` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyTopic!=null and where.rightFuzzyTopic.size()>0">
+                (
+                <foreach collection="where.rightFuzzyTopic"  separator="or" item="item">
+                    `Topic` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.topicInfoList != null">
+                    `topic_info` in
+                    <foreach collection="where.topicInfoList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyTopicInfo!=null and where.fuzzyTopicInfo.size()>0">
+                (
+                <foreach collection="where.fuzzyTopicInfo"  separator="or" item="item">
+                    `Topic_info` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyTopicInfo!=null and where.rightFuzzyTopicInfo.size()>0">
+                (
+                <foreach collection="where.rightFuzzyTopicInfo"  separator="or" item="item">
+                    `Topic_info` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.addDateList != null">
+                    `add_date` in
+                    <foreach collection="where.addDateList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyAddDate!=null and where.fuzzyAddDate.size()>0">
+                (
+                <foreach collection="where.fuzzyAddDate"  separator="or" item="item">
+                    `Add_date` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyAddDate!=null and where.rightFuzzyAddDate.size()>0">
+                (
+                <foreach collection="where.rightFuzzyAddDate"  separator="or" item="item">
+                    `Add_date` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.categoryList != null">
+                    `category` in
+                    <foreach collection="where.categoryList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyCategory!=null and where.fuzzyCategory.size()>0">
+                (
+                <foreach collection="where.fuzzyCategory"  separator="or" item="item">
+                    `Category` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyCategory!=null and where.rightFuzzyCategory.size()>0">
+                (
+                <foreach collection="where.rightFuzzyCategory"  separator="or" item="item">
+                    `Category` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.recommendLevelList != null">
+                    `recommend_level` in
+                    <foreach collection="where.recommendLevelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.recommendLevelSt !=null">
+                `recommend_level` >= #{where.recommendLevelSt} and
+            </if>
+            <if test="where.recommendLevelEd!=null">
+                `recommend_level` &lt;= #{where.recommendLevelEd} and
+            </if>
+                <if test="where.exlevelList != null">
+                    `exlevel` in
+                    <foreach collection="where.exlevelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.exlevelSt !=null">
+                `exlevel` >= #{where.exlevelSt} and
+            </if>
+            <if test="where.exlevelEd!=null">
+                `exlevel` &lt;= #{where.exlevelEd} and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.gryffindor.dao.entity.ArguementDO" id="ArguementDOMap">
+        <result property="id" column="id"/>
+        <result property="topic" column="topic"/>
+        <result property="topicInfo" column="topic_info"/>
+        <result property="addDate" column="add_date"/>
+        <result property="category" column="category"/>
+        <result property="recommendLevel" column="recommend_level"/>
+        <result property="exlevel" column="exlevel"/>
+    </resultMap>
+
+
+    <select id="queryArguementDO" resultMap="ArguementDOMap">
+        select
+        <include refid="baseResult"></include>
+        from  `arguement`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="topic != null and topic!=''">
+                `topic` = #{topic} and
+            </if>
+            <if test="topicInfo != null and topicInfo!=''">
+                `topic_info` = #{topicInfo} and
+            </if>
+            <if test="addDate != null and addDate!=''">
+                `add_date` = #{addDate} and
+            </if>
+            <if test="category != null and category!=''">
+                `category` = #{category} and
+            </if>
+            <if test="recommendLevel != null">
+                `recommend_level` = #{recommendLevel} and
+            </if>
+            <if test="exlevel != null">
+                `exlevel` = #{exlevel} and
+            </if>
+            <if test = "(_parameter instanceof com.gryffindor.dao.entity.ArguementDO$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="topicList != null">
+                    `topic` in
+                    <foreach collection="topicList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyTopic!=null and fuzzyTopic.size()>0">
+                    (
+                    <foreach collection="fuzzyTopic"  separator="or" item="item">
+                        `Topic` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyTopic!=null and rightFuzzyTopic.size()>0">
+                    (
+                    <foreach collection="rightFuzzyTopic"  separator="or" item="item">
+                        `Topic` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="topicInfoList != null">
+                    `topic_info` in
+                    <foreach collection="topicInfoList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyTopicInfo!=null and fuzzyTopicInfo.size()>0">
+                    (
+                    <foreach collection="fuzzyTopicInfo"  separator="or" item="item">
+                        `Topic_info` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyTopicInfo!=null and rightFuzzyTopicInfo.size()>0">
+                    (
+                    <foreach collection="rightFuzzyTopicInfo"  separator="or" item="item">
+                        `Topic_info` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="addDateList != null">
+                    `add_date` in
+                    <foreach collection="addDateList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyAddDate!=null and fuzzyAddDate.size()>0">
+                    (
+                    <foreach collection="fuzzyAddDate"  separator="or" item="item">
+                        `Add_date` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyAddDate!=null and rightFuzzyAddDate.size()>0">
+                    (
+                    <foreach collection="rightFuzzyAddDate"  separator="or" item="item">
+                        `Add_date` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="categoryList != null">
+                    `category` in
+                    <foreach collection="categoryList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyCategory!=null and fuzzyCategory.size()>0">
+                    (
+                    <foreach collection="fuzzyCategory"  separator="or" item="item">
+                        `Category` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCategory!=null and rightFuzzyCategory.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCategory"  separator="or" item="item">
+                        `Category` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="recommendLevelList != null">
+                    `recommend_level` in
+                    <foreach collection="recommendLevelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="recommendLevelSt !=null">
+                    `recommend_level` >= #{recommendLevelSt} and
+                </if>
+                <if test="recommendLevelEd!=null">
+                    `recommend_level` &lt;= #{recommendLevelEd} and
+                </if>
+                <if test="exlevelList != null">
+                    `exlevel` in
+                    <foreach collection="exlevelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="exlevelSt !=null">
+                    `exlevel` >= #{exlevelSt} and
+                </if>
+                <if test="exlevelEd!=null">
+                    `exlevel` &lt;= #{exlevelEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryArguementDOLimit1" resultMap="ArguementDOMap">
+        select
+        <include refid="baseResult"></include>
+        from  `arguement`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="topic != null and topic!=''">
+                `topic` = #{topic} and
+            </if>
+            <if test="topicInfo != null and topicInfo!=''">
+                `topic_info` = #{topicInfo} and
+            </if>
+            <if test="addDate != null and addDate!=''">
+                `add_date` = #{addDate} and
+            </if>
+            <if test="category != null and category!=''">
+                `category` = #{category} and
+            </if>
+            <if test="recommendLevel != null">
+                `recommend_level` = #{recommendLevel} and
+            </if>
+            <if test="exlevel != null">
+                `exlevel` = #{exlevel} and
+            </if>
+            <if test = "(_parameter instanceof com.gryffindor.dao.entity.ArguementDO$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                    <if test="topicList != null">
+                        `topic` in
+                        <foreach collection="topicList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyTopic!=null and fuzzyTopic.size()>0">
+                    (
+                    <foreach collection="fuzzyTopic"  separator="or" item="item">
+                        `Topic` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyTopic!=null and rightFuzzyTopic.size()>0">
+                    (
+                    <foreach collection="rightFuzzyTopic"  separator="or" item="item">
+                        `Topic` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="topicInfoList != null">
+                        `topic_info` in
+                        <foreach collection="topicInfoList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyTopicInfo!=null and fuzzyTopicInfo.size()>0">
+                    (
+                    <foreach collection="fuzzyTopicInfo"  separator="or" item="item">
+                        `Topic_info` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyTopicInfo!=null and rightFuzzyTopicInfo.size()>0">
+                    (
+                    <foreach collection="rightFuzzyTopicInfo"  separator="or" item="item">
+                        `Topic_info` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="addDateList != null">
+                        `add_date` in
+                        <foreach collection="addDateList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyAddDate!=null and fuzzyAddDate.size()>0">
+                    (
+                    <foreach collection="fuzzyAddDate"  separator="or" item="item">
+                        `Add_date` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyAddDate!=null and rightFuzzyAddDate.size()>0">
+                    (
+                    <foreach collection="rightFuzzyAddDate"  separator="or" item="item">
+                        `Add_date` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="categoryList != null">
+                        `category` in
+                        <foreach collection="categoryList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyCategory!=null and fuzzyCategory.size()>0">
+                    (
+                    <foreach collection="fuzzyCategory"  separator="or" item="item">
+                        `Category` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCategory!=null and rightFuzzyCategory.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCategory"  separator="or" item="item">
+                        `Category` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="recommendLevelList != null">
+                        `recommend_level` in
+                        <foreach collection="recommendLevelList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="recommendLevelSt !=null">
+                    `recommend_level` >= #{recommendLevelSt} and
+                </if>
+                <if test="recommendLevelEd!=null">
+                    `recommend_level` &lt;= #{recommendLevelEd} and
+                </if>
+                    <if test="exlevelList != null">
+                        `exlevel` in
+                        <foreach collection="exlevelList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="exlevelSt !=null">
+                    `exlevel` >= #{exlevelSt} and
+                </if>
+                <if test="exlevelEd!=null">
+                    `exlevel` &lt;= #{exlevelEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `topic`,
+        `topic_info`,
+        `add_date`,
+        `category`,
+        `recommend_level`,
+        `exlevel`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.gryffindor.dao.entity.ArguementDO$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.topic==true">
+                        `topic`,
+                    </if>
+                    <if test="fetchFields.fetchFields.topicInfo==true">
+                        `topic_info`,
+                    </if>
+                    <if test="fetchFields.fetchFields.addDate==true">
+                        `add_date`,
+                    </if>
+                    <if test="fetchFields.fetchFields.category==true">
+                        `category`,
+                    </if>
+                    <if test="fetchFields.fetchFields.recommendLevel==true">
+                        `recommend_level`,
+                    </if>
+                    <if test="fetchFields.fetchFields.exlevel==true">
+                        `exlevel`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.topic==null">
+                        `topic`,
+                    </if>
+                    <if test="fetchFields.excludeFields.topicInfo==null">
+                        `topic_info`,
+                    </if>
+                    <if test="fetchFields.excludeFields.addDate==null">
+                        `add_date`,
+                    </if>
+                    <if test="fetchFields.excludeFields.category==null">
+                        `category`,
+                    </if>
+                    <if test="fetchFields.excludeFields.recommendLevel==null">
+                        `recommend_level`,
+                    </if>
+                    <if test="fetchFields.excludeFields.exlevel==null">
+                        `exlevel`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.gryffindor.dao.entity.ArguementDO$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>
