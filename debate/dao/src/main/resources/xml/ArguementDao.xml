@@ -44,7 +44,16 @@
       </if>
     </trim>
   </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="queryAllByCategory" resultType="scu.debate.dao.entity.Arguement">
+      select
+      <include refid="Base_Column_List" />
+      from arguement
+        where category = #{category,jdbcType=VARCHAR}
+    </select>
+  <select id="queryAll" resultType="scu.debate.dao.entity.Arguement">
+    select * from arguement
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from arguement
     where id = #{id,jdbcType=INTEGER}
   </delete>
