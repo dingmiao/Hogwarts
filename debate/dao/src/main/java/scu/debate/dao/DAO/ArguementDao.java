@@ -29,12 +29,10 @@ public interface ArguementDao {
     List<Arguement> queryAll();
 
     @Select("select * from arguement where " +
-            "id >= ((select MAX(id) FROM arguement)-(select MIN(id) FROM arguement)) * RAND() " +
-            "+ (select MIN(id) FROM arguement)  LIMIT 1")
+            "id >= ((select MAX(id) FROM arguement) * RAND()) LIMIT 1")
     Arguement selectOneRandomArgument();
 
     @Select("select * from arguement where category = #{category} and " +
-            "id >= ((select MAX(id) FROM arguement)-(select MIN(id) FROM arguement)) * RAND() " +
-            "+ (select MIN(id) FROM arguement)  LIMIT 1")
+            "id >= ((select MAX(id) FROM arguement) * RAND()) LIMIT 1")
     Arguement selectOneRandomArgumentByCategory(String category);
 }

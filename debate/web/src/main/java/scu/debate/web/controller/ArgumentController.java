@@ -33,7 +33,7 @@ public class ArgumentController {
         return ResultUtils.successMessage(JSONArray.toJSONString(argumentService.getAllArgument()));
     }
 
-    @RequestMapping(value = "getArgumentByTopic",method = RequestMethod.GET)
+    @RequestMapping(value = "getArgumentByTopic",method = RequestMethod.POST)
     public String getRandomArgument(String category) {
         Arguement arguement = argumentService.getRandomTopicByCategory(category);
         if (null == arguement) {

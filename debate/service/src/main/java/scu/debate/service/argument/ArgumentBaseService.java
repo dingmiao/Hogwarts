@@ -67,10 +67,20 @@ public class ArgumentBaseService {
     }
 
     public Arguement updateArgument(String topic, String topicInfo, String category, Integer recommendLevel, Integer exLevel) {
-        Arguement arguement = queryThenBuildBaseTopic(topic, topicInfo, category);
+        if (!argumentValidation.topicValidate(topic)) {
+            return null;
+        }
+        Arguement arguement = getArgument(topic);
         if (null == arguement) {
             return null;
         }
+        arguement.setTopic(topic);
+        arguement.setTopicInfo(topicInfo);
+        arguement.setCategory(category);
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateTime = simpleDateFormat.format(date);
+        arguement.setAddDate(dateTime);
         arguement.setRecommendLevel(recommendLevel);
         arguement.setExlevel(exLevel);
         arguementDao.updateByPrimaryKeySelective(arguement);
