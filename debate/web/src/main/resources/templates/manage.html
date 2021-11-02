@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>manage</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body class="layui-layout-body" style="overflow: hidden">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">管理系统</div>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item"><a href="/index"><i class="layui-icon">&#xe682;</i> 退出</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree">
+                    <li class="layui-nav-item"><a href="/manage"><i class="layui-icon">&#xe705;</i> 辩题管理</a></li>
+                    <li class="layui-nav-item"><a href="/addArgument"><i class="layui-icon">&#xe705;</i> 增加辩题</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body" id="contextbody">
+            <!-- 内容主体区域 -->
+            <div style="margin-top: 30px"></div>
+            <form class="layui-form">
+                <h1 class="layui-form-item" style="text-align: center">题库内容</h1>
+            </form>
+
+            <table lay-filter="demo">
+                <thead>
+                <tr>
+                    <th lay-data="{field:'id'}">编号</th>
+                    <th lay-data="{field:'category'}">类别</th>
+                    <th lay-data="{field:'topic'}">题目</th>
+                    <th lay-data="{field:'topicInfo'}">题解</th>
+                    <th lay-data="{field:'exLevel'}">推荐等级</th>
+                    <th lay-data="{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}">删除</th>
+
+                </tr>
+                </thead>
+                <tbody id = "table-body">
+                </tbody>
+            </table>
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-xs" lay-event="choose">编辑</a>
+            </script>
+        </div>
+    </div>
+</body>
+<script src="../static/layui/layui.js"></script>
+<script src="../static/jquery-3.5.1.js"></script>
+<script>
+    layui.use(["form","table","layer"],function (){
+        var table = layui.table;
+        var layer = layui.layer;
+
+        $.ajax({
+            url : "/getAllTopic",
+            success : function (data) {
+                var jsonData = JSON.parse(data)["data"];
+                var dataArrayString = jsonData.slice(1,jsonData.length - 1);
+                var dataArray = [];
+                var front = 0;
+                for (let i = 0; i < dataArrayString.length; ++i) {
+                    if (dataArrayString.charAt(i) === '}') {
+                        dataArray.push(dataArrayString.slice(front, i + 1));
+                        console.log(dataArrayString.slice(front, i + 1));
+                        front = i + 2;
+                    }
+                }
+                var content = "";
+                for(let i = 0; i < dataArray.length; ++i) {
+                    let col = JSON.parse(dataArray[i]);
+                    content += "<tr>" + "<td>" + i + "</td>" +
+                        "<td>" + col["category"] + "</td>" +
+                        "<td>" + col["topic"] + "</td>" +
+                        "<td>" + col["topicInfo"] + "</td>" +
+                        "<td>" + col["recommendLevel"] + "</td>" + "</tr>";
+                }
+                $("#table-body").html(content);
+                table.init('demo', {
+                    height: 600
+                    ,limit: 100
+                    ,page: true //开启分页
+                    ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                    ,defaultToolbar: ['filter', 'exports']
+                });
+            }
+        })
+        //监听行工具事件
+        table.on('tool(demo)', function(obj){
+            var data = obj.data["topic"];
+            if(obj.event === 'choose'){
+                layer.open({
+                    content: '确定删除？'
+                    ,title : "confirm"
+                    ,btn: ['确定', '取消',]
+                    ,yes: function(index, layero) {
+                        $.ajax({
+                            url : "/deleteArgument",
+                            type : "post",
+                            data : {
+                                "topic" : data
+                            },
+                            success : function (data) {
+                                var jsonData = JSON.parse(data);
+                                if (jsonData["code"] === 500) {
+                                    alert(jsonData["data"]);
+                                } else {
+                                    alert("success!");
+                                }
+                            }
+                        });
+                        layer.close(index);
+                        window.location.href = "/manage";
+                    }
+                });
+
+            }
+        });
+    })
+</script>
+</html>

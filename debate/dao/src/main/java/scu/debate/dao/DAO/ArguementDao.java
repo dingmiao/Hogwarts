@@ -33,6 +33,6 @@ public interface ArguementDao {
     Arguement selectOneRandomArgument();
 
     @Select("select * from arguement where category = #{category} and " +
-            "id >= ((select MAX(id) FROM arguement) * RAND()) LIMIT 1")
+            "id >= ((select MAX(id) FROM (select * from arguement where category = #{category}) as tab) * RAND()) LIMIT 1")
     Arguement selectOneRandomArgumentByCategory(String category);
 }

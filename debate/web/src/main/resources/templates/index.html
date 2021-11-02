@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>welcome</title>
+</head>
+<body>
+    <div style="display: flex">
+        <div id ="lable">hi</div>
+        <button id ="btn" class="layui-btn layui-btn-fluid" onclick="f()">抽</button>
+    </div>
+</body>
+<script src="../static/layui/layui.js"></script>
+<script src="../static/jquery-3.5.1.js"></script>
+<script>
+   function f(){
+        $.ajax({
+            url : "/getRandomArgument",
+            success : function (data) {
+                var jsonData = JSON.parse(data);
+                var topic = JSON.parse(jsonData["data"])["topic"];
+                $("#lable").html(topic);
+            }
+        })
+    }
+</script>
+</html>

@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="scu.debate.dao.entity.Arguement">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="topic" jdbcType="VARCHAR" property="topic" />
-    <result column="topic_info" jdbcType="VARCHAR" property="topicInfo" />
-    <result column="add_date" jdbcType="VARCHAR" property="addDate" />
+    <result column="topicInfo" jdbcType="VARCHAR" property="topicInfo" />
+    <result column="addDate" jdbcType="VARCHAR" property="addDate" />
     <result column="category" jdbcType="VARCHAR" property="category" />
-    <result column="recommend_level" jdbcType="INTEGER" property="recommendLevel" />
+    <result column="recommendLevel" jdbcType="INTEGER" property="recommendLevel" />
     <result column="exlevel" jdbcType="INTEGER" property="exlevel" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, topic, topic_info, add_date, category, recommend_level, exlevel
+    id, topic, topicInfo, addDate, category, recommendLevel, exlevel
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -28,16 +28,16 @@
         topic = #{topic,jdbcType=VARCHAR} and
       </if>
       <if test="topicInfo != null">
-        topic_info = #{topicInfo,jdbcType=VARCHAR} and
+        topicInfo = #{topicInfo,jdbcType=VARCHAR} and
       </if>
       <if test="addDate != null">
-        add_date = #{addDate,jdbcType=VARCHAR} and
+        addDate = #{addDate,jdbcType=VARCHAR} and
       </if>
       <if test="category != null">
         category = #{category,jdbcType=VARCHAR} and
       </if>
       <if test="recommendLevel != null">
-        recommend_level = #{recommendLevel,jdbcType=INTEGER} and
+        recommendLevel = #{recommendLevel,jdbcType=INTEGER} and
       </if>
       <if test="exlevel != null">
         exlevel = #{exlevel,jdbcType=INTEGER}
@@ -58,8 +58,8 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="scu.debate.dao.entity.Arguement" useGeneratedKeys="true">
-    insert into arguement (topic, topic_info, add_date, 
-      category, recommend_level, exlevel
+    insert into arguement (topic, topicInfo, addDate,
+      category, recommendLevel, exlevel
       )
     values (#{topic,jdbcType=VARCHAR}, #{topicInfo,jdbcType=VARCHAR}, #{addDate,jdbcType=VARCHAR}, 
       #{category,jdbcType=VARCHAR}, #{recommendLevel,jdbcType=INTEGER}, #{exlevel,jdbcType=INTEGER}
@@ -72,16 +72,16 @@
         topic,
       </if>
       <if test="topicInfo != null">
-        topic_info,
+        topicInfo,
       </if>
       <if test="addDate != null">
-        add_date,
+        addDate,
       </if>
       <if test="category != null">
         category,
       </if>
       <if test="recommendLevel != null">
-        recommend_level,
+        recommendLevel,
       </if>
       <if test="exlevel != null">
         exlevel,
@@ -115,16 +115,16 @@
         topic = #{topic,jdbcType=VARCHAR},
       </if>
       <if test="topicInfo != null">
-        topic_info = #{topicInfo,jdbcType=VARCHAR},
+        topicInfo = #{topicInfo,jdbcType=VARCHAR},
       </if>
       <if test="addDate != null">
-        add_date = #{addDate,jdbcType=VARCHAR},
+        addDate = #{addDate,jdbcType=VARCHAR},
       </if>
       <if test="category != null">
         category = #{category,jdbcType=VARCHAR},
       </if>
       <if test="recommendLevel != null">
-        recommend_level = #{recommendLevel,jdbcType=INTEGER},
+        recommendLevel = #{recommendLevel,jdbcType=INTEGER},
       </if>
       <if test="exlevel != null">
         exlevel = #{exlevel,jdbcType=INTEGER},
@@ -135,10 +135,10 @@
   <update id="updateByPrimaryKey" parameterType="scu.debate.dao.entity.Arguement">
     update arguement
     set topic = #{topic,jdbcType=VARCHAR},
-      topic_info = #{topicInfo,jdbcType=VARCHAR},
-      add_date = #{addDate,jdbcType=VARCHAR},
+      topicInfo = #{topicInfo,jdbcType=VARCHAR},
+      addDate = #{addDate,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
-      recommend_level = #{recommendLevel,jdbcType=INTEGER},
+      recommendLevel = #{recommendLevel,jdbcType=INTEGER},
       exlevel = #{exlevel,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

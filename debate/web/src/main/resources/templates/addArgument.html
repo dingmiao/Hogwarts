@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加辩题</title>
+</head>
+<link rel="stylesheet" href="../static/layui/css/layui.css">
+<body class="layui-layout-body" style="overflow: hidden">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">管理系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="/index"><i class="layui-icon">&#xe682;</i> 退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item"><a href="/manage"><i class="layui-icon">&#xe705;</i> 辩题管理</a></li>
+                <li class="layui-nav-item"><a href="/addArgument"><i class="layui-icon">&#xe705;</i> 增加辩题</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" id="contextbody">
+        <!-- 内容主体区域 -->
+        <div style="margin-top: 80px"></div>
+        <h2 style="text-align: center">辩题发布</h2>
+        <form class ="layui-form">
+            <div class="layui-form-item">
+                <label class ="layui-form-label">题目</label>
+                <div class="layui-input-block">
+                    <input type="text" id="topic" name="topic" autocomplete="off" placeholder="" required class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class ="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <input type="text" id="topicInfo" name="topicInfo" autocomplete="off" placeholder="" required class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class ="layui-form-label">类别</label>
+                <div class="layui-input-inline">
+                    <select name = "category" id ="category">
+                        <option value="政策" selected>政策</option>
+                        <option value="事实">事实</option>
+                        <option value="价值">价值</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class ="layui-form-label">推荐等级</label>
+                <div class="layui-input-inline">
+                    <select name = "recommend-level" id ="recommend-level">
+                        <option value="0" selected>0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <button class="layui-btn" id="btn" style="margin-left: 90px">确定</button>
+    </div>
+</div>
+</body>
+<script src="../static/layui/layui.js"></script>
+<script src="../static/jquery-3.5.1.js"></script>
+<script>
+    layui.use(["form"],function (){});
+    $("#btn").click(function (){
+        var topic = $("#topic").val();
+        if (topic.length < 8 || topic.length > 50) {
+            alert("请确定长度在8-50个字符内");
+            return;
+        }
+        var category = $("#category").val();
+        var recommendLevel = $("#recommend-level").val();
+        var topicInfo = $("#topicInfo").val();
+        if (topicInfo.length > 100) {
+            alert("描述太长了");
+            return;
+        }
+        $.ajax({
+            url : "/addArgumentDetail",
+            type : "post",
+            data : {
+                "topic" : topic,
+                "topicInfo" : topicInfo,
+                "category" : category,
+                "recommendLevel" :  recommendLevel,
+                "exLevel" : 0
+            },
+            success : function (data) {
+                var jsonData = JSON.parse(data);
+                if (jsonData["code"] === 500) {
+                    alert(jsonData["data"]);
+                } else {
+                    alert("success!");
+                }
+            }
+        })
+    })
+</script>
+</html>
