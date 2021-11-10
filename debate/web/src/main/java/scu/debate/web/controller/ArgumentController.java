@@ -2,12 +2,12 @@ package scu.debate.web.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import scu.debate.dao.entity.Arguement;
 import scu.debate.service.argument.ArgumentService;
 import scu.debate.web.utils.ResultUtils;
+
+import java.util.Map;
 
 @RestController
 public class ArgumentController {
@@ -33,9 +33,9 @@ public class ArgumentController {
         return ResultUtils.successMessage(JSONArray.toJSONString(argumentService.getAllArgument()));
     }
 
-    @RequestMapping(value = "getArgumentByTopic",method = RequestMethod.POST)
-    public String getRandomArgument(String category) {
-        Arguement arguement = argumentService.getRandomTopicByCategory(category);
+    @PostMapping(value = "getArgumentByTopic")
+    public String getRandomArgument(@RequestBody Map<String, Object> map) {
+        Arguement arguement = argumentService.getRandomTopicByCategory((String)map.get("category"));
         if (null == arguement) {
             return ResultUtils.errorMessage(null, "题库没东西啊");
         }
@@ -43,7 +43,10 @@ public class ArgumentController {
     }
 
     @RequestMapping(value = "addArgument", method = RequestMethod.POST)
-    public String addArgument(String topic, String topicInfo, String category) {
+    public String addArgument(Map<String, Object> map) {
+        String topic = (String) map.get("topic");
+        String topicInfo = (String) map.get("topicInfo");
+        String category = (String) map.get("category");
         Arguement arguement = argumentService.addArgument(topic, topicInfo, category);
         if (null == arguement) {
             return ResultUtils.errorMessage(null, "已经有了");
@@ -52,7 +55,12 @@ public class ArgumentController {
     }
 
     @RequestMapping(value = "addArgumentDetail", method = RequestMethod.POST)
-    public String addArgumentDetail(String topic, String topicInfo, String category, Integer recommendLevel, Integer exLevel) {
+    public String addArgumentDetail(Map<String, Object> map) {
+        String topic = (String) map.get("topic");
+        String topicInfo =(String) map.get("topicInfo");
+        String category =(String) map.get("category");
+        Integer recommendLevel =(Integer) map.get("recommendLevel");
+        Integer exLevel =(Integer) map.get("exLevel");
         Arguement arguement = argumentService.addArgumentDetail(topic, topicInfo, category,recommendLevel,exLevel);
         if (null == arguement) {
             return ResultUtils.errorMessage(null, "已经有了");
@@ -61,7 +69,12 @@ public class ArgumentController {
     }
 
     @RequestMapping(value = "updateArgument", method = RequestMethod.POST)
-    public String updateArgument(String topic, String topicInfo, String category, Integer recommendLevel, Integer exLevel) {
+    public String updateArgument(Map<String, Object> map) {
+        String topic = (String) map.get("topic");
+        String topicInfo =(String) map.get("topicInfo");
+        String category =(String) map.get("category");
+        Integer recommendLevel =(Integer) map.get("recommendLevel");
+        Integer exLevel =(Integer) map.get("exLevel");
         Arguement arguement = argumentService.updateArgument(topic, topicInfo, category,recommendLevel,exLevel);
         if (null == arguement) {
             return ResultUtils.errorMessage(null, "没这个题目");
@@ -70,7 +83,8 @@ public class ArgumentController {
     }
 
     @RequestMapping(value = "deleteArgument", method = RequestMethod.POST)
-    public String deleteArgument(String topic) {
+    public String deleteArgument(Map<String, Object> map) {
+        String topic = (String) map.get("topic");
         Arguement arguement = argumentService.deleteArgumentByTopic(topic);
         if (null == arguement) {
             return ResultUtils.errorMessage(null, "没这个题目");
